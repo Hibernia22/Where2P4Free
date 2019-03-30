@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="primary">
+	  <ion-title>Where2P4Free</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none" *ngFor="let toilet of toilets">
+    <ion-card>
+      <ion-card-content>
+        <h2>Location: {{toilet.location}}</h2>
+        <p>Description: {{toilet.description}}</p>
+        <p>Type: {{toilet.type}}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+  
+</ion-content>

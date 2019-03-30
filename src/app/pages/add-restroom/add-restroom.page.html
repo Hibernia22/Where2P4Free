@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Restroom</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+	<form (ngSubmit)="addLocation()">
+    <ion-item>
+      <ion-input placeholder="Location" type="text" [(ngModel)]="toilet.location" name="location" clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Description" type="text" [(ngModel)]="toilet.description" name="description" clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select [(ngModel)]="toilet.type" name="type">
+          <ion-select-option>Male</ion-select-option>
+          <ion-select-option>Female</ion-select-option>
+          <ion-select-option>Male & Female</ion-select-option>
+          <ion-select-option>Disabled</ion-select-option>
+          <ion-select-option>Gender Neutral</ion-select-option>
+        </ion-select>
+      </ion-item>
+    <ion-button type="submit" block (click)="presentToast()">Add Toilet</ion-button>
+  </form>
+</ion-content>
