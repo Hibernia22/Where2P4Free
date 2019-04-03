@@ -41,6 +41,17 @@ export class RestService {
     });
   }
 
+  updateLocation(data) {
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + "/updateLocation", JSON.stringify(data), httpOptions).subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   removeLocation(data) {
     console.log(data);
     return new Promise((resolve, reject) => {

@@ -34,9 +34,13 @@ var routes = [
                 loadChildren: '../directions-tab/directions-tab.module#DirectionsTabPageModule'
             },
             {
-                path: 'detailstab',
+                path: 'restroomstab',
                 loadChildren: '../restrooms-tab/restrooms-tab.module#RestroomsTabPageModule'
             },
+            {
+                path: 'directionstab/addrestroom',
+                loadChildren: '../add-restroom/add-restroom.module#AddRestroomPageModule'
+            }
         ]
     },
     {
@@ -73,7 +77,7 @@ var HomePageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-tabs>\n\t<ion-tab-bar slot=\"bottom\">\n\t\n\t\t<ion-tab-button tab=\"directionstab\">\n\t\t\t<ion-icon name=\"navigate\"></ion-icon>\n\t\t\t<ion-label>Directions</ion-label>\n\t\t</ion-tab-button>\n\t\t\n\t\t<ion-tab-button tab=\"detailstab\">\n\t\t\t<ion-icon name=\"body\"></ion-icon>\n\t\t\t<ion-label>Restrooms</ion-label>\n\t\t</ion-tab-button>\n\t\n\t</ion-tab-bar>\n</ion-tabs>\n"
+module.exports = "<ion-tabs>\n\t<ion-tab-bar slot=\"bottom\">\n\t\n\t\t<ion-tab-button tab=\"directionstab\">\n\t\t\t<ion-icon name=\"navigate\"></ion-icon>\n\t\t\t<ion-label>Directions</ion-label>\n\t\t</ion-tab-button>\n\t\t\n\t\t<ion-tab-button tab=\"restroomstab\">\n\t\t\t<ion-icon name=\"body\"></ion-icon>\n\t\t\t<ion-label>Restrooms</ion-label>\n\t\t</ion-tab-button>\n\t\n\t</ion-tab-bar>\n</ion-tabs>\n"
 
 /***/ }),
 

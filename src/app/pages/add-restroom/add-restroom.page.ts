@@ -27,7 +27,7 @@ export class AddRestroomPage implements OnInit {
     const toast = await this.toastController.create({
       message: 'Restroom has been added.',
       duration: 2000, 
-      position: 'middle'
+      position: 'bottom'
     });
     toast.present();
   }

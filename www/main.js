@@ -837,6 +837,11 @@ module.exports = webpackAsyncContext;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"../add-restroom/add-restroom.module": [
+		"./src/app/pages/add-restroom/add-restroom.module.ts",
+		"common",
+		"add-restroom-add-restroom-module"
+	],
 	"../directions-tab/directions-tab.module": [
 		"./src/app/pages/directions-tab/directions-tab.module.ts",
 		"common",
@@ -850,10 +855,6 @@ var map = {
 	"./pages/home/home.module": [
 		"./src/app/pages/home/home.module.ts",
 		"pages-home-home-module"
-	],
-	"./pages/restroomstab/restroomstab.module": [
-		"./src/app/pages/restroomstab/restroomstab.module.ts",
-		"pages-restroomstab-restroomstab-module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -897,7 +898,6 @@ __webpack_require__.r(__webpack_exports__);
 var routes = [
     { path: '', redirectTo: 'directions/directionstab', pathMatch: 'full' },
     { path: 'directions', loadChildren: './pages/home/home.module#HomePageModule' },
-    { path: 'restroomstab', loadChildren: './pages/restroomstab/restroomstab.module#RestroomstabPageModule' },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {

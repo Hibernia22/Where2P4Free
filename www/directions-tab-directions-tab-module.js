@@ -2001,7 +2001,7 @@ module.exports = "<ion-header>\n  <ion-toolbar color=\"primary\"> \n    <ion-tit
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#map_canvas {\n  height: 100%; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvZGlyZWN0aW9ucy10YWIvRDpcXElvbmljIEFwcHNcXFdoZXJlMlA0RnJlZS9zcmNcXGFwcFxccGFnZXNcXGRpcmVjdGlvbnMtdGFiXFxkaXJlY3Rpb25zLXRhYi5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFZLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9wYWdlcy9kaXJlY3Rpb25zLXRhYi9kaXJlY3Rpb25zLXRhYi5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIjbWFwX2NhbnZhcyB7XHJcbiAgICBoZWlnaHQ6IDEwMCU7XHJcbn0iXX0= */"
+module.exports = "#map_canvas {\n  height: 100%; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvZGlyZWN0aW9ucy10YWIvRDpcXElvbmljIEFwcHNcXFdoZXJlMlA0RnJlZS9zcmNcXGFwcFxccGFnZXNcXGRpcmVjdGlvbnMtdGFiXFxkaXJlY3Rpb25zLXRhYi5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFZLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9wYWdlcy9kaXJlY3Rpb25zLXRhYi9kaXJlY3Rpb25zLXRhYi5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIjbWFwX2NhbnZhcyB7XHJcbiAgICBoZWlnaHQ6IDEwMCU7XHJcbn1cclxuIl19 */"
 
 /***/ }),
 
@@ -2029,38 +2029,14 @@ var DirectionsTabPage = /** @class */ (function () {
     function DirectionsTabPage(platform, restService) {
         this.platform = platform;
         this.restService = restService;
-        this.getLocations();
+        this.variable = false;
+        if (this.variable = false) {
+            this.variable = true;
+        }
+        else {
+            this.getLocations();
+        }
     }
-    DirectionsTabPage.prototype.getLocations = function () {
-        var _this = this;
-        this.restService.getLocations().then(function (data) {
-            _this.locations = data;
-            var _loop_1 = function (i) {
-                var marker = _this.map.addMarkerSync({
-                    position: {
-                        lat: _this.locations[i]['latitude'],
-                        lng: _this.locations[i]['longitude'],
-                    }
-                });
-                var htmlInfoWindow = new _ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["HtmlInfoWindow"]();
-                var frame = document.createElement('div');
-                frame.innerHTML = [
-                    "<p>" + _this.locations[i]['location'] + "</p>",
-                    "<ion-button>Add</ion-button>\n          <ion-button>Remove</ion-button>"
-                ].join("");
-                htmlInfoWindow.setContent(frame, {
-                    width: "275px",
-                    height: "125px"
-                });
-                marker.on(_ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsEvent"].MARKER_CLICK).subscribe(function () {
-                    htmlInfoWindow.open(marker);
-                });
-            };
-            for (var i = 0; i < _this.locations.length; i++) {
-                _loop_1(i);
-            }
-        });
-    };
     DirectionsTabPage.prototype.goToMyLocation = function () {
         var _this = this;
         this.map.getMyLocation().then(function (location) {
@@ -2079,6 +2055,50 @@ var DirectionsTabPage = /** @class */ (function () {
             });
         });
     };
+    DirectionsTabPage.prototype.getLocations = function () {
+        var _this = this;
+        this.restService.getLocations().then(function (data) {
+            _this.locations = data;
+            var _loop_1 = function (i) {
+                var marker = _this.map.addMarkerSync({
+                    position: {
+                        lat: _this.locations[i]['latitude'],
+                        lng: _this.locations[i]['longitude'],
+                    },
+                });
+                var htmlInfoWindow = new _ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["HtmlInfoWindow"]();
+                var frame = document.createElement('div');
+                frame.innerHTML = [
+                    "<p>" + _this.locations[i]['location'] + "</p>",
+                    "\n            <ion-button class=\"updateMarker\">Update</ion-button>\n            <ion-button class=\"removeMarker\">Remove</ion-button>\n          "
+                ].join("");
+                frame.getElementsByClassName("updateMarker")[0].addEventListener("click", function () {
+                    console.log('Marker updated!');
+                });
+                frame.getElementsByClassName("removeMarker")[0].addEventListener("click", function () {
+                    console.log('Marker removed!');
+                    var removeMarkerLocation = {};
+                    removeMarkerLocation['toiletID'] = _this.locations[i]['toiletID'];
+                    _this.restService.removeLocation(removeMarkerLocation).then(function (result) {
+                        console.log(result);
+                    }, function (err) {
+                        console.log(err);
+                    });
+                    marker.remove();
+                });
+                htmlInfoWindow.setContent(frame, {
+                    width: "275px",
+                    height: "125px"
+                });
+                marker.on(_ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsEvent"].MARKER_CLICK).subscribe(function () {
+                    htmlInfoWindow.open(marker);
+                });
+            };
+            for (var i = 0; i < _this.locations.length; i++) {
+                _loop_1(i);
+            }
+        });
+    };
     DirectionsTabPage.prototype.addMarkerLocation = function () {
         var _this = this;
         this.map.on(_ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsEvent"].MAP_LONG_CLICK).subscribe(function (data) {
@@ -2088,22 +2108,37 @@ var DirectionsTabPage = /** @class */ (function () {
                     position: {
                         lat: _this.location[i]['lat'],
                         lng: _this.location[i]['lng'],
-                    }
+                    },
                 });
                 var htmlInfoWindow = new _ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["HtmlInfoWindow"]();
                 var frame = document.createElement('div');
                 frame.innerHTML = [
-                    "<p>New marker added. Do you wish to add this location?</p>\n              <ion-button class=\"addMarker\">Add</ion-button>\n              <ion-button class=\"removeMarker\">Remove</ion-button>"
+                    "   \n              <p>Marker added. Do you wish to add this restroom</p>\n              <ion-button class=\"addRestroom\">Add</ion-button>\n              <ion-button class=\"removeMarker\">Remove</ion-button>\n            "
                 ].join("");
-                frame.getElementsByClassName("addMarker")[0].addEventListener("click", function () {
-                    console.log('Marker added!');
+                frame.getElementsByClassName("addRestroom")[0].addEventListener("click", function () {
+                    console.log('Restroom added!');
+                    var htmlInfoWindow = new _ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["HtmlInfoWindow"]();
+                    var frame = document.createElement('div');
+                    frame.innerHTML = [
+                        "   \n                <p>Enter information below:</p>\n                <form action=\"\" method=\"post\">\n                  <label>Location:\n                  <p><input type=\"text\" name=\"location\"></p>\n                  <label>Description:</label>\n                  <p><input type=\"text\" name=\"description\"></p>\n                  <label>Type:</label>\n                  <p><input type=\"text\" name=\"type\"></p>\n                  <ion-button type=\"submit\" class=\"addRestroom\">Submit</ion-button>\n                  <ion-button class=\"closeInfoWindow\">Close</ion-button>\n                </form>\n              "
+                    ].join("");
+                    frame.getElementsByClassName("closeInfoWindow")[0].addEventListener("click", function () {
+                        console.log('InfoWindow closed!');
+                        htmlInfoWindow.close();
+                    });
+                    htmlInfoWindow.setContent(frame, {
+                        width: "275px",
+                        height: "325px"
+                    });
+                    htmlInfoWindow.open(marker);
                 });
                 frame.getElementsByClassName("removeMarker")[0].addEventListener("click", function () {
+                    console.log('Marker removed!');
                     marker.remove();
                 });
                 htmlInfoWindow.setContent(frame, {
                     width: "275px",
-                    height: "100px"
+                    height: "125px"
                 });
                 marker.on(_ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsEvent"].MARKER_CLICK).subscribe(function () {
                     htmlInfoWindow.open(marker);
@@ -2112,6 +2147,38 @@ var DirectionsTabPage = /** @class */ (function () {
             for (var i = 0; i < _this.location.length; i++) {
                 _loop_2(i);
             }
+        });
+    };
+    DirectionsTabPage.prototype.addPointOfInterest = function () {
+        var _this = this;
+        this.map.on(_ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsEvent"].POI_CLICK).subscribe(function (data) {
+            console.log(data[2]['lat']);
+            console.log(data[2]['lng']);
+            var marker = _this.map.addMarkerSync({
+                position: {
+                    lat: data[2]['lat'],
+                    lng: data[2]['lng']
+                }
+            });
+            var htmlInfoWindow = new _ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["HtmlInfoWindow"]();
+            var frame = document.createElement('div');
+            frame.innerHTML = [
+                "\n            <p>Marker added. Do you wish to add this restroom?</p>\n            <ion-button class=\"addPointOfInterest\">Add</ion-button>\n            <ion-button class=\"removeMarker\">Remove</ion-button>\n          "
+            ].join(",");
+            frame.getElementsByClassName("addPointOfInterest")[0].addEventListener("click", function () {
+                console.log('Restroom added!');
+            });
+            frame.getElementsByClassName("removeMarker")[0].addEventListener("click", function () {
+                console.log('Marker removed!');
+                marker.remove();
+            });
+            htmlInfoWindow.setContent(frame, {
+                width: "275px",
+                height: "125px"
+            });
+            marker.on(_ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsEvent"].MARKER_CLICK).subscribe(function () {
+                htmlInfoWindow.open(marker);
+            });
         });
     };
     DirectionsTabPage.prototype.loadMap = function () {
@@ -2123,6 +2190,7 @@ var DirectionsTabPage = /** @class */ (function () {
         this.map = _ionic_native_google_maps_ngx__WEBPACK_IMPORTED_MODULE_2__["GoogleMaps"].create('map_canvas');
         this.goToMyLocation();
         this.addMarkerLocation();
+        this.addPointOfInterest();
     };
     DirectionsTabPage.prototype.ngOnInit = function () {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {

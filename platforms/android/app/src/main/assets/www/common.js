@@ -135,6 +135,17 @@ var RestService = /** @class */ (function () {
             });
         });
     };
+    RestService.prototype.removeLocation = function (data) {
+        var _this = this;
+        console.log(data);
+        return new Promise(function (resolve, reject) {
+            _this.http.post(_this.apiUrl + "/removeLocation", JSON.stringify(data), httpOptions).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     RestService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
