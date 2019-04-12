@@ -80,7 +80,6 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-navigation href="http://192.168.0.66:8100" sessionid="9caa8478" />
-    <allow-navigation href="http://10.40.10.229:8100" sessionid="c3f22474" />
     <allow-intent href="market:*" />
     <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
     <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />

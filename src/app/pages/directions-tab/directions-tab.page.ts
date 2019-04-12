@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent, Marker, MyLocation, Environment, HtmlInfoWindow, GoogleMapsAnimation, LatLng, MarkerOptions } from '@ionic-native/google-maps/ngx';
+import { GoogleMaps, GoogleMap, GoogleMapsEvent, Marker, MyLocation, Environment, HtmlInfoWindow, GoogleMapsAnimation, LatLng, MarkerOptions, GoogleMapOptions, LocationService } from '@ionic-native/google-maps/ngx';
 import { Platform } from '@ionic/angular';
 import { RestService } from '../../service/rest.service';
 
@@ -8,7 +8,7 @@ import { RestService } from '../../service/rest.service';
   templateUrl: './directions-tab.page.html',
   styleUrls: ['./directions-tab.page.scss'],
 })
-export class DirectionsTabPage implements OnInit {
+export class DirectionsTabPage {
 
   map: GoogleMap;
   locations: any;
@@ -31,20 +31,40 @@ export class DirectionsTabPage implements OnInit {
 
   goToMyLocation() { 
     this.map.getMyLocation().then((location: MyLocation) => {
- 
-      this.map.animateCamera({
-        target: location.latLng,
-        zoom: 15,
-        duration: 5000
+
+      this.map.moveCamera({
+        target: location.latLng, 
+        zoom: 18, 
       });
  
       let marker: Marker = this.map.addMarkerSync({
-        title: 'Current location.',
+        icon: 'blue',
         position: location.latLng,      
       });
- 
-      marker.showInfoWindow();
- 
+
+      let htmlInfoWindow = new HtmlInfoWindow();
+
+      let frame: HTMLElement = document.createElement('div');
+      frame.innerHTML = [         
+        `
+          <p>Current Location</p>
+          <form>
+            <ion-button type="submit" class="refreshMap">Refresh</ion-button>
+          </form>
+        `
+        ].join(""); 
+  
+        frame.getElementsByClassName("refreshMap")[0].addEventListener("click", () => {
+          	console.log('Map refreshed!');
+        });
+
+        htmlInfoWindow.setContent(frame, {
+          width: "125px",
+          height: "125px"
+        });
+
+        htmlInfoWindow.open(marker);
+
       this.map.on(GoogleMapsEvent.MAP_READY).subscribe(
         (data) => {
             console.log("Click MAP",data);
@@ -63,7 +83,7 @@ export class DirectionsTabPage implements OnInit {
             lng: this.locations[i]['longitude'],
           },       
         });
-
+        
         let htmlInfoWindow = new HtmlInfoWindow();
 
         let frame: HTMLElement = document.createElement('div');
@@ -76,32 +96,33 @@ export class DirectionsTabPage implements OnInit {
         ].join("");        
 
         frame.getElementsByClassName("updateMarker")[0].addEventListener("click", () => {
-          console.log('Marker updated!');                    
-
           let htmlInfoWindow = new HtmlInfoWindow();
 
           let frame: HTMLElement = document.createElement('div');
           frame.innerHTML = [
             `
-              <p>Enter details below:</p>
-              <form>
-                <label>Location:</label>
-                <p><input type="text" id="location" name="location"></p>
-                <label>Description:</label>
-                <p><input type="text" id="description" name="description"></p>
-                <label>Type:</label>
-                <p><input type="text" id="type" name="type"></p>
-                <ion-button type="submit" class="updateRestroom">Update</ion-button>
-                <ion-button class="closeInfoWindow">Close</ion-button>
+              <p>Enter details below:</p>     
+              <label>Location:</label>
+              <p><input type="text" id="location" name="location" required></p>
+              <label>Description:</label>
+              <p><input type="text" id="description" name="description" required></p>
+              <label>Type:</label>
+              <p><select id="typeList"></p>
+                  <option></option>
+                  <option>Male</option>
+                  <option>Female</option>  
+                  <option>Gender Neutral</option>
+                  <option>Disabled</option>
+                </select>
+              <p><ion-button class="updateRestroom">Update</ion-button>
+              <ion-button class="closeInfoWindow">Close</ion-button></p>
             `
           ].join(",");
 
           frame.getElementsByClassName("updateRestroom")[0].addEventListener("click", () => {
-            console.log('Restroom added!');
-
             var location = (<HTMLInputElement>document.getElementById("location")).value;
             var description = (<HTMLInputElement>document.getElementById("description")).value;
-            var type = (<HTMLInputElement>document.getElementById("type")).value;
+            var type = (<HTMLSelectElement>document.getElementById("type")).value;
               
             var updateRestroomLocation = {};
 
@@ -117,6 +138,10 @@ export class DirectionsTabPage implements OnInit {
               }, (err) => {
               console.log(err);
             }); 
+          });
+
+          frame.getElementsByClassName("closeInfoWindow")[0].addEventListener("click", () => {
+            htmlInfoWindow.close();
           });
 
           htmlInfoWindow.setContent(frame, {
@@ -178,48 +203,45 @@ export class DirectionsTabPage implements OnInit {
           frame.getElementsByClassName("addMarker")[0].addEventListener("click", () => {
             let htmlInfoWindow = new HtmlInfoWindow();
 
-            let frame: HTMLElement = document.createElement('div');
-            frame.innerHTML = [
-              `
-                <p>Marker added. Do you wish to add this restroom?</p>
-                <ion-button class="addRestroom">Add</ion-button>
-                <ion-button class="closeInfoWindow">Close</ion-button>
-              `
-            ].join(",");
+            let frame: HTMLElement = document.createElement('div');            
             frame.innerHTML = [     
               `   
-                <p>Enter information below:</p>        
-                <form>                         
-                  <label>Location:</label>
-                  <p><input type="text" id="location" name="location"></p>
-                  <label>Description:</label>
-                  <p><input type="text" id="description" name="description"></p>
-                  <label>Type:</label>
-                  <p><input type="text" id="type" name="type"></p>
-                  <ion-button type="submit" class="addRestroom">Submit</ion-button>
-                  <ion-button class="closeInfoWindow">Close</ion-button>       
-                </form>       
+                <p>Enter information below:</p>                                                                       
+                <label>Location:</label>
+                <p><input type="text" id="location" name="location"></p>
+                <label>Description:</label>
+                <p><input type="text" id="description" name="description"></p>
+                <label>Type:</label>
+                <p><select id="typeList"></p>
+                  <option></option>
+                  <option>Male</option>
+                  <option>Female</option>  
+                  <option>Gender Neutral</option>
+                  <option>Disabled</option>
+                </select>
+                <p><ion-button class="addRestroom">Submit</ion-button>
+                <ion-button class="closeInfoWindow">Close</ion-button></p>                                                       
               `
             ].join("");              
 
             frame.getElementsByClassName("addRestroom")[0].addEventListener("click", () => {
               var location = (<HTMLInputElement>document.getElementById("location")).value;
               var description = (<HTMLInputElement>document.getElementById("description")).value;
-              var type = (<HTMLInputElement>document.getElementById("type")).value;
-              
-              var addRestroomLocation = {};
+              var type = (<HTMLSelectElement>document.getElementById("typeList")).value;
 
+              var addRestroomLocation = {};
+                
               addRestroomLocation['location'] = location;
               addRestroomLocation['description'] = description;
               addRestroomLocation['type'] = type;
               addRestroomLocation['lat'] = this.location[i]['lat'];
               addRestroomLocation['lng'] = this.location[i]['lng'];
-              
+                
               this.restService.addLocation(addRestroomLocation).then((result) => {
                 console.log(result);
                 }, (err) => {
                 console.log(err);
-              });              
+              });                          
             });
 
             frame.getElementsByClassName("closeInfoWindow")[0].addEventListener("click", () => {
@@ -255,57 +277,10 @@ export class DirectionsTabPage implements OnInit {
     );
   }
 
-  // addPointOfInterest() {
-  //   this.map.on(GoogleMapsEvent.POI_CLICK).subscribe(
-  //     (data) => {
-  //       console.log(data[2]['lat']);
-  //       console.log(data[2]['lng']);
-        
-  //       let marker: Marker = this.map.addMarkerSync({
-  //         position: {
-  //           lat: data[2]['lat'],
-  //           lng: data[2]['lng']
-  //         }
-  //       });          
-
-  //       let htmlInfoWindow = new HtmlInfoWindow();
-
-  //       let frame: HTMLElement = document.createElement('div');
-  //       frame.innerHTML = [
-  //         `
-  //           <p>Marker added. Do you wish to add this restroom?</p>
-  //           <ion-button class="addPointOfInterest">Add</ion-button>
-  //           <ion-button class="removeMarker">Remove</ion-button>
-  //         `
-  //       ].join(",");
-
-  //       frame.getElementsByClassName("addPointOfInterest")[0].addEventListener("click", () => {
-  //         console.log('Restroom added!');
-  //       });
-
-  //       frame.getElementsByClassName("removeMarker")[0].addEventListener("click", () => {
-  //         console.log('Marker removed!');
-
-  //         marker.remove();
-  //       });
-
-  //       htmlInfoWindow.setContent(frame, {
-  //         width: "275px", 
-  //         height: "125px"
-  //       });
-
-  //       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-  //         htmlInfoWindow.open(marker);
-  //       });
-  //     }
-  //   )
-  // }
-
-  loadMap() {
+  async loadMap() {
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': '', 
-      'API_KEY_FOR_BROWSER_DEBUG': ''
-      // 'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyD2Epl4sTOB8doQThPI8iApvzssOLng60o'
+      // 'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyAtcaMeDtBfN4lc6aYcL2gZxCoLejUj_tc'
     });
     this.map = GoogleMaps.create('map_canvas');
     this.goToMyLocation();

@@ -15,8 +15,7 @@ export class RestroomsTabPage {
    }
 
   getLocations() {
-    this.restService.getLocations()
-    .then(data => {
+    this.restService.getLocations().then(data => {
       this.toilets = data;
     });
   }

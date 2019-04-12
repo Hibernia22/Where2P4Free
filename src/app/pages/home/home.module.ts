@@ -19,10 +19,6 @@ const routes: Routes = [
       {
         path: 'restroomstab', 
         loadChildren: '../restrooms-tab/restrooms-tab.module#RestroomsTabPageModule'
-      }, 
-      {
-        path: 'directionstab/addrestroom',
-        loadChildren: '../add-restroom/add-restroom.module#AddRestroomPageModule'
       }
     ]
   }, 

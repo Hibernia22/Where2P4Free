@@ -135,6 +135,17 @@ var RestService = /** @class */ (function () {
             });
         });
     };
+    RestService.prototype.updateLocation = function (data) {
+        var _this = this;
+        console.log(data);
+        return new Promise(function (resolve, reject) {
+            _this.http.post(_this.apiUrl + "/updateLocation", JSON.stringify(data), httpOptions).subscribe(function (res) {
+                resolve(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     RestService.prototype.removeLocation = function (data) {
         var _this = this;
         console.log(data);

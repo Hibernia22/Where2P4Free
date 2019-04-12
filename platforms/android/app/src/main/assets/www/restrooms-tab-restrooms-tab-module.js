@@ -96,8 +96,7 @@ var RestroomsTabPage = /** @class */ (function () {
     }
     RestroomsTabPage.prototype.getLocations = function () {
         var _this = this;
-        this.restService.getLocations()
-            .then(function (data) {
+        this.restService.getLocations().then(function (data) {
             _this.toilets = data;
         });
     };

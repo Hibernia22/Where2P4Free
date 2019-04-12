@@ -1,0 +1,4 @@
+#Fri Apr 12 15:34:42 BST 2019
+base.0=D\:\\Ionic Apps\\Where2P4Free\\platforms\\android\\app\\build\\intermediates\\transforms\\dex\\release\\0
+path.0=classes.dex
+renamed.0=classes.dex
