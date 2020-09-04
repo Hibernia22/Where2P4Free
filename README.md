@@ -3,16 +3,16 @@ Mobile application for Android built using the Ionic framework. It assists users
 
 Location show on map:
 
-![alt text](screenshots/map.jpg?raw=true)
+![alt text](screenshots/map.jpg?raw=true "Map")
 
 
 Nearby locations listed:
 
-![alt text](screenshots/locations.jpg?raw=true)
+![alt text](screenshots/locations.jpg?raw=true "Locations")
 
 Add new location:
 
-![alt text](screenshots/add.jpg?raw=true)
+![alt text](screenshots/add.jpg?raw=true "Add")
 
 # Documentation
 [http://dev.itcarlow.ie/C00190601/index.html](http://dev.itcarlow.ie/C00190601/index.html "Where2P4Free Documentation")
