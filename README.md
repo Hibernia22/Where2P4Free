@@ -1,5 +1,5 @@
 # Where2P4Free 
-Mobile application for Android built using the Ionic framework. It assists users in finding free public restrooms nearest to them. Uses crowdsoucrced data to find and display nearby restrooms. GoogleMaps plugin for Ionic provides geolocation and map services. 
+Mobile application for Android built using the Ionic framework. It assists users in finding free public restrooms nearest to them. Uses crowdsourced data to find and display nearby restrooms. GoogleMaps plugin for Ionic provides geolocation and map services. 
 
 Location show on map:
 
