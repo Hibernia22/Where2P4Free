@@ -20,7 +20,7 @@ Mobile application for Android built using the Ionic framework. It assists users
 
 **Remove existing restroom:**
 
-![alt text](screenshots/map.jpg?raw=true "Remove")
+![alt text](screenshots/remove.jpg?raw=true "Remove")
 
 # Documentation
 [http://dev.itcarlow.ie/C00190601/index.html](http://dev.itcarlow.ie/C00190601/index.html "Where2P4Free Documentation")
